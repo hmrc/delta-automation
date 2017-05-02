@@ -11,11 +11,11 @@ import scalaj.http._
 trait RESTClient {
 
   lazy val conf: Config = ConfigFactory.load()
-  lazy val username = conf.getString("dryrun.user")
-  lazy val password = conf.getString("dryrun.password")
-  lazy val requestedWith = conf.getString("dryrun.xrequestedwith")
-  lazy val agenturl = conf.getString("dryrun.url.agent")
-  lazy val businessurl = conf.getString("dryrun.url.business")
+  lazy val username: String = conf.getString("dryrun.user")
+  lazy val password: String = conf.getString("dryrun.password")
+  lazy val requestedWith: String = conf.getString("dryrun.xrequestedwith")
+  lazy val agenturl: String = conf.getString("dryrun.url.agent")
+  lazy val businessurl: String = conf.getString("dryrun.url.business")
 
   //logger.debug(s"username = ${username} password = ${password} requestedWith = ${requestedWith} agenturl = ${agenturl} businessurl = ${businessurl}")
 

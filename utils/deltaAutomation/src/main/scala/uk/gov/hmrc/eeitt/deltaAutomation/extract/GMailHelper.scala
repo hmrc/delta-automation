@@ -6,22 +6,18 @@ import javax.activation.{ DataHandler, FileDataSource }
 import javax.mail.Session
 import javax.mail.internet.{ InternetAddress, MimeBodyPart, MimeMessage, MimeMultipart }
 
-import com.google.api.client.auth.oauth2.Credential
 import com.google.api.services.gmail.Gmail
 import com.google.api.services.gmail.model.{ Message, ModifyMessageRequest }
+import com.typesafe.scalalogging.Logger
 
 import scala.collection.JavaConverters._
 import scala.language.implicitConversions
 
 trait GMailHelper extends GoogleAuthService {
 
+  val logger: Logger
   private val userId = "me"
-  protected val gMailService: Gmail = {
-    val credential: Credential = authorise
-    new Gmail.Builder(HTTP_TRANSPORT, JSON_FACTORY, credential)
-      .setApplicationName(APPLICATION_NAME)
-      .build
-  }
+  protected val gMailService: Gmail
 
   protected def getMessageId(message: Message): String = {
     message.getId
