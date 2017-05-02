@@ -1,31 +1,22 @@
-# EEITT
+This application takes a spreadsheet and returns a text file containing the data from the ETMP delta ready to be loaded through the endpoint.
 
-[![Build Status](https://travis-ci.org/hmrc/eeitt.svg)](https://travis-ci.org/hmrc/eeitt) [ ![Download](https://api.bintray.com/packages/hmrc/releases/eeitt/images/download.svg) ](https://bintray.com/hmrc/releases/eeitt/_latestVersion)
+1. To use this application you need a few things:
 
-This is the backend for the EEITT microservice.
+   1. An input folder in which to place the .xlsx or .xls
+   files to be processed.
+        
+   2. An output folder where ether output records will be kept.
+        
+   3. An output folder to store the files containing the records which could not be parsed.
+        
+   4. Configure the above information in delta-automation/conf/application.conf
+        
+        
+2. Place the files to be processed in the input folder and enter the following:
 
-## Pre-population API
+   ./delta-automation
 
-There are two endpoints for persisting form pre-population data in production.
+   The files produced by this will be of the original name with a time stamp appended to them.
 
-PUT        /eeitt/prepopulation/:cacheId/:formId
+   The files would be produced in the output folders
 
-GET        /eeitt/prepopulation/:cacheId/:formId
-
-In non-production environments, there is an extra endpoint, intended to facilitate testing
-
-DELETE     /eeitt/prepopulation/:cacheId
-
-See eeitt.raml for more formal detail
-
-## Pre-population integration tests
-
-When you run sbt it:test, it will fail with:
-
-    [info]   java.net.ConnectException: Connection refused: localhost/127.0.0.1:8085
-
-unless you first run smserver
-
-### License
-
-This code is open source software licensed under the [Apache 2.0 License]("http://www.apache.org/licenses/LICENSE-2.0.html")
