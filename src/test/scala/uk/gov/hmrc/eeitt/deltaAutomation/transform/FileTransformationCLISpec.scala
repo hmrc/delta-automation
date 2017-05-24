@@ -88,7 +88,6 @@ class FileTransformationCLISpec extends FlatSpec with Matchers {
     val path = getClass.getResource(fileName).getPath
     val file = new File(path)
     val fileImport = FileTransformationManual
-    fileImport.reInitLogger(Logger("TestFileImport"))
     val myWorkbook: Workbook = FileTransformationManual.getFileAsWorkbook(file.getAbsolutePath)
     val workbookAsString = FileTransformationManual.readRows(myWorkbook)
     workbookAsString shouldBe a[List[_]]
@@ -110,14 +109,12 @@ class FileTransformationCLISpec extends FlatSpec with Matchers {
   "A valid file location" should "be verified and returned true" in {
     val path = getClass.getResource("").getPath
     val fileImport = FileTransformationManual
-    fileImport.reInitLogger(Logger("TestFileImport"))
     isValidFileLocation(path, true, false) shouldBe true
   }
 
   "An Invalid file location" should "be verified and returned false" in {
     val inValidpath = "//ABC//DEF//GHI"
     val fileImport = FileTransformationManual
-    fileImport.reInitLogger(Logger("TestFileImport"))
     isValidFileLocation(inValidpath, true, false) shouldBe false
   }
 
@@ -125,7 +122,6 @@ class FileTransformationCLISpec extends FlatSpec with Matchers {
     val path = getClass.getResource("").getPath
     val file = new File(path)
     val fileImport = FileTransformationManual
-    fileImport.reInitLogger(Logger("TestFileImport"))
     fileImport.isValidFile(file.getAbsolutePath) shouldBe false
   }
 
@@ -134,7 +130,6 @@ class FileTransformationCLISpec extends FlatSpec with Matchers {
     val path = getClass.getResource(fileName).getPath
     val file = new File(path)
     val fileImport = FileTransformationManual
-    fileImport.reInitLogger(Logger("TestFileImport"))
     fileImport.isValidFile(file.getAbsolutePath) shouldBe false
   }
 
@@ -143,7 +138,6 @@ class FileTransformationCLISpec extends FlatSpec with Matchers {
     val path = getClass.getResource(fileName).getPath
     val file = new File(path)
     val fileImport = FileTransformationManual
-    fileImport.reInitLogger(Logger("TestFileImport"))
     val myWorkbook: Workbook = fileImport.getFileAsWorkbook(file.getAbsolutePath)
     val workbookAsString = FileTransformationManual.readRows(myWorkbook)
     workbookAsString shouldBe a[List[_]]
