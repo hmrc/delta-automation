@@ -12,7 +12,6 @@ import com.typesafe.scalalogging.Logger
 
 import scala.collection.JavaConverters._
 import scala.language.implicitConversions
-import uk.gov.hmrc.eeitt.deltaAutomation.utils.RegexUtil._
 
 trait GMailHelper extends GoogleAuthService {
 
