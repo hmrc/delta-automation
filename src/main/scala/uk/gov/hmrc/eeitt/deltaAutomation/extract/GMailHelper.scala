@@ -42,7 +42,8 @@ trait GMailHelper extends GoogleAuthService {
   protected def isValidEmail(id: String): Boolean = {
     val labels: List[String] = getLabels(id)
     val sender: String = getSender(id)
-    labels.contains(config.getString("GMail.Helper.Labels")) && labels.contains("UNREAD") && sender == config.getString("GMail.Helper.Sender")
+    val regex = "([A-z,a-z,1-9]*).([A-z,a-z,1-9]*)@(hmrc|digital).([a-z]*).gov.uk".r
+    labels.contains(config.getString("GMail.Helper.Labels")) && labels.contains("UNREAD") && regex.pattern.matcher(sender).matches()
   }
 
   protected def createDeltaMessage(logFile: File, masterFile: File, result: String): MimeMessage = {
