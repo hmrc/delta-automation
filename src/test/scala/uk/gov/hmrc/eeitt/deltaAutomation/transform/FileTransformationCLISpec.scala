@@ -50,27 +50,6 @@ class FileTransformationCLISpec extends FlatSpec with Matchers {
     badRowsList(0).content should startWith("The length of the cells should be 12 and second & third cells should be filled")
   }
 
-  "filter business user bad records" should "remove the bad business user records because its third cell continues to be select" in {
-    val businessData: List[RowString] = List(
-      RowString("File Type|Registration Number|Tax Regime|Tax Regime Description|Organisation Type|Organisation Type Description|Organisation Name|Customer Title|Customer First Name|Customer Second Name|Customer Postal Code|Customer Country Code|"),
-      RowString("001|12345|select|Gaming Duty (GD)|7.0|Limited|LTD||||BN12 4XL|GB|")
-    )
-    val (goodRowsList, badRowsList, ignoredRowsList): (List[RowString], List[RowString], List[RowString]) = BusinessUser.partitionUserNonUserAndIgnoredRecords(businessData, BusinessUser)
-    ignoredRowsList(0).content should startWith("The third cell is unselected|001|12345|select|Gaming Duty (GD)|7.0|Limited|LTD||||BN12 4XL|GB")
-  }
-
-  "filter business user good and bad records" should "filter the bad business user records because its third cell continues to be select, but the good one should pass" in {
-    val businessData: List[RowString] = List(
-      RowString("File Type|Registration Number|Tax Regime|Tax Regime Description|Organisation Type|Organisation Type Description|Organisation Name|Customer Title|Customer First Name|Customer Second Name|Customer Postal Code|Customer Country Code|"),
-      RowString("001|12345|select|Gaming Duty (GD)|7.0|Limited|LTD||||BN12 4XL|GB|"),
-      RowString("001|XQBD00000000|BINGO|Bingo Duty (BD)|7|Limited Company|Bingo||||BN12 4XL|GB|")
-    )
-    val (goodRowsList, badRowsList, ignoredRowsList): (List[RowString], List[RowString], List[RowString]) = BusinessUser.partitionUserNonUserAndIgnoredRecords(businessData, BusinessUser)
-    ignoredRowsList(0).content should startWith("The third cell is unselected|001|12345|select|Gaming Duty (GD)|7.0|Limited|LTD||||BN12 4XL|GB")
-    goodRowsList(0).content should startWith("001|XQBD00000000|||||||||BN12 4XL|GB")
-    badRowsList.size shouldBe (0)
-  }
-
   "filter business user good and ignored records" should "filter the ignored business user records because its third cell continues to be select, but the good one should pass" in {
     val businessData: List[RowString] = List(
       RowString("File Type|Registration Number|Tax Regime|Tax Regime Description|Organisation Type|Organisation Type Description|Organisation Name|Customer Title|Customer First Name|Customer Second Name|Customer Postal Code|Customer Country Code|"),
