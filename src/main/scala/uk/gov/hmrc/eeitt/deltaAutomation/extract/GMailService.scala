@@ -2,7 +2,7 @@ package uk.gov.hmrc.eeitt.deltaAutomation.extract
 
 import java.io.{ ByteArrayOutputStream, File, FileOutputStream }
 import javax.naming.CommunicationException
-
+import cats.data.EitherT
 import com.google.api.client.auth.oauth2.Credential
 import com.google.api.client.repackaged.org.apache.commons.codec.binary.Base64
 import com.google.api.services.gmail.Gmail
@@ -11,6 +11,7 @@ import com.typesafe.scalalogging.Logger
 import uk.gov.hmrc.eeitt.deltaAutomation.errors.FailureReason
 import uk.gov.hmrc.eeitt.deltaAutomation.transform.Locations._
 import uk.gov.hmrc.eeitt.deltaAutomation.transform._
+import cats.syntax.either._
 
 import scala.collection.JavaConverters._
 import scala.language.implicitConversions

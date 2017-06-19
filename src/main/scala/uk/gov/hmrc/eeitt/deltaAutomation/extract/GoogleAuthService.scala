@@ -14,6 +14,7 @@ import com.google.api.services.gmail.GmailScopes
 import com.typesafe.config.{ Config, ConfigFactory }
 import uk.gov.hmrc.eeitt.deltaAutomation.errors.FailureReason
 import uk.gov.hmrc.eeitt.deltaAutomation.transform.Locations._
+import cats.syntax.either._
 
 import scala.collection.JavaConverters._
 import scala.language.implicitConversions

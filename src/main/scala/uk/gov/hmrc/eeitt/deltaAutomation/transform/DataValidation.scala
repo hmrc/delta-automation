@@ -3,7 +3,7 @@ package uk.gov.hmrc.eeitt.deltaAutomation.transform
 import java.io.File
 import java.nio.file.Files.{ exists, isReadable, isRegularFile }
 import java.nio.file.{ Files, Path, Paths, StandardCopyOption }
-
+import cats.syntax.either._
 import com.typesafe.scalalogging.Logger
 import play.api.libs.json.{ JsValue, Json }
 import uk.gov.hmrc.eeitt.deltaAutomation.errors.FailureReason
@@ -28,7 +28,7 @@ trait DataValidation extends WorkBookProcessing {
     val result = for {
       actual <- getNumberOfUniqueUsers(filePath, user)
     } yield {
-      val expected = getActualUniqueUserCount(getData(filePath, user))
+      val expected = getActualUniqueUserCount(getData(filePath, user), user)
       expected == actual
     }
 
@@ -57,15 +57,18 @@ trait DataValidation extends WorkBookProcessing {
     numbers
   }
 
-  private def getActualUniqueUserCount(rows: List[String]): Int = {
-    rows.groupBy(_.split("\\|")(1)).size
+  def getActualUniqueUserCount(rows: List[String], user: User): Int = {
+    user match {
+      case AgentUser => rows.groupBy(_.split("\\|")(1)).size
+      case BusinessUser => rows.groupBy(_.split("\\|")(1)).map(x => x._2.size).sum
+    }
   }
 
   private def formatData(fileLocation: String, user: User): String = {
     getData(fileLocation, user).mkString("\n")
   }
 
-  private def getData(fileLocation: String, user: User): List[String] = {
+  def getData(fileLocation: String, user: User): List[String] = {
     reader.readDataFromFile(fileLocation, user)
   }
 
@@ -87,7 +90,7 @@ trait DataValidation extends WorkBookProcessing {
     }
   }
 
-  protected def isValidFile(file: String): Boolean = {
+  def isValidFile(file: String): Boolean = {
     val path: Path = Paths.get(file)
     if (!exists(path) || !isRegularFile(path)) {
       logger.error(s"Invalid filelocation in $file - This file is not processed")
