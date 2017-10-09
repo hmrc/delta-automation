@@ -29,6 +29,7 @@ trait DataValidation extends WorkBookProcessing {
       actual <- getNumberOfUniqueUsers(filePath, user)
     } yield {
       val expected = getActualUniqueUserCount(getData(filePath, user), user)
+      logger.info(s" Expected : $expected == $actual : Actual")
       expected == actual
     }
 
@@ -84,7 +85,7 @@ trait DataValidation extends WorkBookProcessing {
   private def parseJsonResponse(json: JsValue): Either[Unit, Int] = {
     val string = (json \ "message").asOpt[String]
     string match {
-      case Some(x) => Right(x.head.asDigit)
+      case Some(x) => Right(x.split(" ")(0).toInt)
       case None =>
         Left(GMailService.sendError())
     }
@@ -105,7 +106,7 @@ trait DataValidation extends WorkBookProcessing {
       Try(getFileAsWorkbook(file)) match {
         case Success(_) => true
         case Failure(e) =>
-          logger.error(s"Incorrent File Content in $file ${e.getMessage} - This file is not processed")
+          logger.error(s"Incorrent File Content in $file ${e} - This file is not processed")
           false
       }
     }
